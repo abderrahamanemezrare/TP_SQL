@@ -1,0 +1,152 @@
+I)____________________________________
+1) create user Etudiant identified by ro
+
+2) grant all privileges to Etudiant
+
+II)_____________________________________
+1) create table service(code_service varchar(5),
+nom_service varchar(20),
+batiment varchar(5),
+constraint PK_service primary key (code_service));
+
+create table chambre(code_service varchar(5),
+num_chambre varchar(5),
+surveillant varchar(15),
+nb_lits integer,
+constraint PK_chambre primary key (code_service,num_chambre),
+constraint FK_chambre foreign key (code_service) references service);
+
+create table employee(num_emp varchar(10),
+nom_emp varchar(15),
+prenom_emp varchar(15),
+adresse_emp varchar(50),
+tel_emp varchar(10),
+constraint PK_employee primary key (num_emp));
+
+create table medecin(num_med varchar(10),
+specialte varchar(15),
+constraint PK_medecin primary key (num_med));
+
+create table infermier(num_inf varchar(10),
+code_service varchar(5),
+rotation varchar(5),
+salaire varchar(10),
+constraint PK_infermier primary key (num_inf),
+constraint FK_infermier foreign key (code_service) references service);
+
+create table patient(num_patient varchar(10),
+nom_patient varchar(15),
+prenom_patient varchar(15),
+adr_patient varchar(50),
+mutuelle varchar(10),
+constraint PK_patient primary key (num_patient));
+
+create table hospitalisation(num_patient varchar(10),
+code_service varchar(5),
+num_chambre varchar(5),
+lit varchar(5),
+constraint PK_hospital primary key (num_patient),
+constraint FK_hospital foreign key (num_patient) references patient,
+constraint FK_hospital1 foreign key (code_service) references service,
+constraint FK_hospital2 foreign key (code_service,num_chambre) references chambre);
+
+create table soigne(num_patient varchar(10),
+nom_med varchar(10),
+constraint PK_soigne primary key (num_patient,nom_med),
+constraint FK_soigne1 foreign key (num_patient) references patient,
+constraint FK_soigne2 foreign key (num_patient) references hospitalisation);
+
+2)
+
+3) alter table hospitalisation
+add(date_host date);
+
+4) alter table infermier 
+modify salaire not null;
+
+alter table patient 
+modify mutuelle not null;
+
+5) alter table patient 
+modify prenom_patient varchar(20);
+
+6) alter table employee 
+drop column tel_emp;
+
+desc employee;
+
+7) alter table patient
+rename column adr_patient to adr_pat;
+
+8) alter table infermier
+add constraint check_salaire check(salaire between 10000 and 30000);
+
+9) alter table service
+add constraint UNQ_nom_service unique(nom_service);
+
+III)_____________________________________
+insert into employee (num_emp,nom_emp,prenom_emp,adresse_emp,tel_emp) 
+values (7,'bouzidi','amel','en face brigade gendarmerie-douera-alger','0556863528'); 
+
+insert into employee (num_emp,nom_emp,prenom_emp,adresse_emp,tel_emp) 
+values (12,'hadj','zouhir','cite de la mosquee bt 14-boufarik-blida','025474882'); 
+
+insert into medecin (num_med,specialte)
+values (7,'cardiologue');
+
+insert into medecin (num_med,specialte)
+values (4,'orthopediste');
+
+insert into service (code_service,nom_service,batiment)
+values ('chg','chirurgie generale','a');
+
+insert into service (code_service,nom_service,batiment)
+values ('car','cardiologie','b');
+
+insert into infermier (num_inf,code_service,rotation,salaire)
+values (12,'rea','jour',12560.78);
+
+insert into infermier (num_inf,code_service,rotation,salaire)
+values (71,'car','nuit',19957.86);
+
+insert into chambre (code_service,num_chambre,surveillant,nb_lits)
+values ('car','101','95','3');
+
+insert into chambre (code_service,num_chambre,surveillant,nb_lits)
+values ('chg','201','29','4');
+
+//insert into patient (num_patient,nom_patient,prenom_patient,adr_patient,mutuelle)
+//values ('1','grigahcine','nacer','bd bougara-el-biar-alger','?????021920313???','mnam');
+
+insert into patient (num_patient,nom_patient,prenom_patient,adr_pat,mutuelle)
+values ('1','grigahcine','nacer','bd bougara-el-biar-alger','mnam');
+
+insert into patient (num_patient,nom_patient,prenom_patient,adr_patient,mutuelle)
+values ('6','aberkane','aboukhallil','cite el khroub constantine','?????031963658???','mnh');
+
+insert into hospitalisation (num_patient,code_service,num_chambre,lit)
+values (68,'car',101,1);
+
+insert into hospitalisation (num_patient,code_service,num_chambre,lit)
+values (72,'car',101,3);
+
+insert into soigne (num_patient,num_med)
+values (4,79);
+
+insert into soigne (num_patient,num_med)
+values (4,79);
+
+2) discribe medecin;
+
+3) select nom_patient, prenom_patient 
+from pat patient
+where mutuelle = 'maaf';
+
+4) select num_chambre 
+from chambre
+where code_service = 'car';
+
+5) select avg(*)
+
+6) select  from 
+group by 
